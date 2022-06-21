@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:quiz_app/quiz_brain.dart';
 
 import 'widgets/custom_button.dart';
 
@@ -52,15 +53,49 @@ class _MyHomePageState extends State<MyHomePage> {
     size: 40,
   );
   List<Icon> icons = <Icon>[];
+  String suroo;
   @override
   void initState() {
-    // icons.add(correctIcon);
-    // icons.add(incorrectIcon);
-    // log(jon.name);
-    // log(jane.name);
-    // TODO: implement initState
+    suroo = quizBrain.getQuestions();
+
     super.initState();
   }
+
+  bool isFinished = false;
+  //koldonuuchununJoobu = answer ;
+  void userAnswered(bool answer) {
+    // tuuraJooptor = realAnswers
+    bool realAnswers = quizBrain.getAnswer();
+    if (answer == realAnswers) {
+      icons.add(correctIcon);
+    } else {
+      icons.add(incorrectIcon);
+    }
+    quizBrain.getNext();
+    suroo = quizBrain.getQuestions();
+    if (suroo == 'Surolor buttu') {
+      isFinished = true;
+    }
+    setState(() {});
+  }
+
+  // void koldonuuchuJoopBerdi(bool answer) {
+  //   bool realAnswers = quizBrain.getAnswer();
+
+  //   if (answer == realAnswers) {
+  //     // ikonkalar.add(tuuraIkonka);
+  //     icons.add(correctIcon);
+  //   } else {
+  //     // ikonkalar.add(kataIkonka);
+  //     icons.add(incorrectIcon);
+  //   }
+  //   // suroonunMeesi.suroonuOtkoz();
+  //   // suroo = suroonunMeesi.suroonuAlipkel();
+  //   // if (suroo == 'Buttu') {
+  //   //   buttubuIndicator = true;
+  //   // }
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -72,36 +107,47 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Column(
-                children: [
-                  const Text(
-                    'Suroolor kelet',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 30),
-                  ),
-                  const SizedBox(
-                    height: 100.0,
-                  ),
-                  CustomButton(
-                      text: 'Туура',
-                      color: const Color(0xff4AB150),
-                      onPressed: () {
-                        setState(() {});
-                        icons.add(correctIcon);
-                      }),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  CustomButton(
-                      text: 'Катаа',
-                      color: const Color(0xffF54336),
-                      onPressed: () {
-                        setState(() {});
-                        icons.add(incorrectIcon);
-                      }),
-                  Row(children: icons),
-                ],
-              )
+              if (isFinished == true)
+                CustomButton(
+                  color: Colors.red,
+                  text: 'Ayagina chikty',
+                  onPressed: () {
+                    quizBrain.restart();
+                    quizBrain.getQuestions();
+                    isFinished = false;
+                    icons = [];
+                    setState(() {});
+                  },
+                )
+              else
+                Column(
+                  children: [
+                    Text(
+                      suroo,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 30),
+                    ),
+                    const SizedBox(
+                      height: 100.0,
+                    ),
+                    CustomButton(
+                        text: 'Туура',
+                        color: const Color(0xff4AB150),
+                        onPressed: () {
+                          userAnswered(true);
+                        }),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    CustomButton(
+                        text: 'Катаа',
+                        color: const Color(0xffF54336),
+                        onPressed: () {
+                          userAnswered(false);
+                        }),
+                    Row(children: icons),
+                  ],
+                )
             ],
           ),
         ),
