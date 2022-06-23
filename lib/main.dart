@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:quiz_app/quiz_brain.dart';
+import 'package:quiz_app/screen/stack_misal.dart';
 
 import 'widgets/custom_button.dart';
 
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           // primarySwatch: Colors.blue,
           ),
-      home: const MyHomePage(),
+      // home: const MyHomePage(),
+      home: const StackMisal(),
     );
   }
 }
@@ -35,13 +37,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // Adam jon = Adam(
-  //   name: 'Jon',
-  // );
-  // Adam jane = Adam(
-  //   name: 'Jane',
-  // );
-  // Unaalar toyota = Unaalar(oturguch: 4);
   Icon correctIcon = const Icon(
     Icons.check,
     color: Colors.green,
@@ -56,9 +51,14 @@ class _MyHomePageState extends State<MyHomePage> {
   String suroo;
   @override
   void initState() {
-    suroo = quizBrain.getQuestions();
+    // suroo = quizBrain.getQuestions();
+    showQuestion();
 
     super.initState();
+  }
+
+  void showQuestion() {
+    suroo = quizBrain.getQuestions();
   }
 
   bool isFinished = false;
@@ -109,6 +109,8 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               if (isFinished == true)
                 CustomButton(
+                  horizontalSize: 0.15,
+                  verticalSize: 0.03,
                   color: Colors.red,
                   text: 'Ayagina chikty',
                   onPressed: () {
@@ -125,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Text(
                       suroo,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 30),
+                      style: const TextStyle(color: Colors.white, fontSize: 30),
                     ),
                     const SizedBox(
                       height: 100.0,
@@ -133,6 +135,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     CustomButton(
                         text: 'Туура',
                         color: const Color(0xff4AB150),
+                        horizontalSize: 0.3,
+                        verticalSize: 0.02,
                         onPressed: () {
                           userAnswered(true);
                         }),
@@ -140,14 +144,17 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 20.0,
                     ),
                     CustomButton(
-                        text: 'Катаа',
-                        color: const Color(0xffF54336),
-                        onPressed: () {
-                          userAnswered(false);
-                        }),
-                    Row(children: icons),
+                      text: 'Катаа',
+                      color: const Color(0xffF54336),
+                      horizontalSize: 0.3,
+                      verticalSize: 0.02,
+                      onPressed: () {
+                        userAnswered(false);
+                      },
+                    ),
                   ],
-                )
+                ),
+              Row(children: icons),
             ],
           ),
         ),
